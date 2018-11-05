@@ -3,7 +3,7 @@ const graphqlHTTP = require("express-graphql");
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
 const config = require("./config/parameters");
-
+const cors = require("cors");
 // connect to db
 mongoose.connect(`mongodb://${config.dbuser}:${config.dbpassword}@ds147073.mlab.com:47073/save-more-db`, { useNewUrlParser: true });
 // once the connection is made, fire a callback to print -> connected to database
@@ -12,6 +12,10 @@ mongoose.connection.once("open", ()=>{
 })
 
 const app = express();
+
+// allow cross-origin requests, which means allowing requests from another server
+app.use(cors());
+
 //endpoint for graphql request
 app.use("/graphql", graphqlHTTP({
     schema,
